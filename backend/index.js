@@ -14,19 +14,40 @@ const admin = require('./routes/admin.js');
 const librarian = require('./routes/librarian.js');
 const home = require('./routes/home.js');
 
+const configuredOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
+
 const allowedOrigins = [
+  ...configuredOrigins,
   'http://localhost:5173',
+  'http://localhost:3000',
   'https://library-management-app-karan.vercel.app',
+  'https://*.vercel.app',
 ];
 
 app.use(express.json());
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    if (!origin) {
+      return callback(null, true);
     }
+
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (allowedOrigin === origin) return true;
+      if (allowedOrigin.includes('*')) {
+        const regex = new RegExp('^' + allowedOrigin.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\\\*/g, '.*') + '$');
+        return regex.test(origin);
+      }
+      return false;
+    });
+
+    if (isAllowed || origin.includes('localhost') || origin.includes('.vercel.app')) {
+      return callback(null, true);
+    }
+
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
 }));
