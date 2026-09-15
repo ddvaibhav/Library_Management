@@ -1,185 +1,193 @@
-# 📚 Library Management System (MERN Stack)
+# New Arts Commerce and Science Library
 
-![MERN Stack](https://img.shields.io/badge/MERN-Full%20Stack-blue)
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://library-management-app-karan.vercel.app/)
+A modern library management system designed for a college environment with role-based access for Admin, Librarian, and Students.
 
-A complete Library Management System built with MongoDB, Express.js, React.js, and Node.js. Features role-based access control with three user types (Admin, Librarian, Student), book management with Cloudinary image uploads, issue/return tracking, and automated fine calculations.
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/Node.js-18-339933?style=for-the-badge&logo=nodedotjs" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express-4-000000?style=for-the-badge&logo=express" alt="Express" />
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?style=for-the-badge&logo=mongodb" alt="MongoDB" />
+</p>
 
-## 🌐 Live Demo
-Check out the live demo of the project:https://library-management-app-karan.vercel.app/
+## Overview
 
-**Test Credentials:**
-- Admin: admin@example.com / admin123
-- Librarian: librarian@example.com / lib123
-- Student: student@example.com / student123
+This project helps manage a digital library with:
 
-## ✨ Key Features
+- student registration and login
+- book catalog browsing
+- issue and return workflows
+- librarian approval process
+- admin dashboard management
+- library attendance tracking with in-time and out-time entry
+- responsive UI for desktop and mobile devices
 
-### 👨‍🎓 Student Features
-- ✅ User registration & login with JWT authentication
-- 🔍 Browse and search available books with images
-- 📥 Request book issuance
-- 📤 Submit return requests
-- ⏳ View due dates and pending fines
-- 📊 Personal dashboard with borrowing history
+## Features
 
-### 📚 Librarian Features
-- ✔️ Approve/reject book issue requests
-- ✔️ Manage return requests
-- ➕ Add/Edit/Remove books with image uploads (Cloudinary)
-- 👀 View all issued books
-- 📊 Dashboard for Real-time Activity & Analytics
+### Student Features
+- secure registration and login
+- browse available books by category
+- view book details and cover images
+- check in and check out from the library
+- track live library presence
+- access personal profile and attendance information
 
-### 👨‍💼 Admin Features
-- 👥 Manage all user accounts
-- 🛡️ Assign librarian privileges
-- 📊 System analytics dashboard
+### Librarian Features
+- approve or reject borrowing requests
+- manage book returns
+- add and manage library inventory
+- monitor student library activity
 
+### Admin Features
+- manage users and roles
+- add librarians
+- view library activity and dashboard statistics
 
+## Tech Stack
 
-## 🛠️ Technology Stack
+### Frontend
+- React.js
+- Vite
+- React Router
+- Bootstrap
+- Axios
+- React Toastify
+- CSS modules and custom styling
 
-### **Frontend**
-![React](https://img.shields.io/badge/React-18.2-%2361DAFB?logo=react)
-![React Router](https://img.shields.io/badge/React_Router-v6.4-CA4245?logo=reactrouter)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5.2-%237952B3?logo=bootstrap)
-![Axios](https://img.shields.io/badge/Axios-1.3-%23631d76?logo=axios)
-![Cloudinary](https://img.shields.io/badge/Cloudinary-1.32-%80B5FF?logo=cloudinary)
-![React Toastify](https://img.shields.io/badge/Toastify-9.1-%23E57470?logo=react)
+### Backend
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- JWT authentication
+- bcrypt password hashing
+- nodemailer for OTP flows
+- in-memory MongoDB fallback for local development
 
-- **Core**: React.js (v18.2) with Functional Components & Hooks
-- **Routing**: React Router v6
-- **UI Framework**: React Bootstrap v5.2 + Custom CSS
-- **HTTP Client**: Axios for API communication
-- **Image Management**: Cloudinary React SDK
-- **Notifications**: React Toastify
-- **Icons**: React Icons library
-- **Form Handling**: React Hook Form
-- **State Management**: Context API
+## Project Structure
 
-### **Backend**
-![Node.js](https://img.shields.io/badge/Node.js-18.x-%23339933?logo=nodedotjs)
-![Express](https://img.shields.io/badge/Express-4.18-%23000000?logo=express)
-![MongoDB](https://img.shields.io/badge/MongoDB-6.0-%2347A248?logo=mongodb)
-![JWT](https://img.shields.io/badge/JWT-Auth-%23000000?logo=jsonwebtokens)
-![Nodemailer](https://img.shields.io/badge/Nodemailer-6.9-%23F7DF1E?logo=nodemailer)
+```bash
+.
+├── backend/
+│   ├── config/
+│   ├── controller/
+│   ├── middlewares/
+│   ├── model/
+│   ├── routes/
+│   ├── schemas/
+│   ├── utils/
+│   ├── index.js
+│   └── package.json
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+├── README.md
+└── .gitignore
+```
 
-- **Runtime**: Node.js v18.x
-- **Framework**: Express.js v4.18
-- **Database**: MongoDB Atlas (Cloud) with Mongoose ODM
-- **Authentication**: JWT with Bcrypt password hashing
-- **Email Service**: Nodemailer for OTP/password reset
-- **File Uploads**: Multer + Cloudinary Node SDK
+## Demo Credentials
 
-### **Development & Testing**
-![Thunder Client](https://img.shields.io/badge/Thunder_Client-1.12-%237A1FA2?logo=thunderclient)
-![Hopscotch](https://img.shields.io/badge/Hopscotch-Docs-%2334A853?logo=hopscotch)
+The application seeds demo users automatically when the backend starts.
 
-- **API Testing**: Thunder Client (VS Code extension)
-- **API Documentation**: Hopscotch
-- **Version Control**: Git + GitHub
+- Admin
+  - Email: admin@example.com
+  - Password: admin123
 
-### **Deployment**
-![Render](https://img.shields.io/badge/Backend-Hosted_on_Render-%2300BFFF?logo=render)
-![Vercel](https://img.shields.io/badge/Frontend-Hosted_on_Vercel-%23000000?logo=vercel)
-![MongoDB Atlas](https://img.shields.io/badge/Database-MongoDB_Atlas-%2347A248?logo=mongodb)
+- Librarian
+  - Email: librarian@example.com
+  - Password: lib123
 
-- **Frontend**: Vercel (Edge Network)
-- **Backend**: Render (Node.js Environment)
-- **Database**: MongoDB Atlas (Cloud)
-- **Media Storage**: Cloudinary CDN
+- Student
+  - Email: student@example.com
+  - Password: student123
 
-## 🛠️ Installation
+## Local Setup
 
 ### 1. Clone the repository
 
-Clone the project repository to your local machine using the following command:
-
 ```bash
-git clone https://github.com/KaranMehta1806/Library-Management.git
+git clone https://github.com/ddvaibhav/Library_Management.git
+cd Library_Management
 ```
 
-### 2. Install Dependencies
-Navigate to the frontend and backend directories, and install dependencies:
+### 2. Install backend dependencies
 
-#### Backend (API)
-
-##### 1. Navigate to the api directory:
 ```bash
 cd backend
-```
-
-##### 2. Install backend dependencies:
-```bash
 npm install
 ```
-#### Frontend (Client)
 
-##### 1. Navigate to the client directory:
+### 3. Install frontend dependencies
+
+```bash
+cd ../frontend
+npm install
+```
+
+### 4. Environment variables
+
+Create a `.env` file in the backend folder if you want to use a real MongoDB connection.
+
+```env
+PORT=5001
+MONGO_URI=mongodb://localhost:27017/library_db
+JWT_SECRET=your_secure_jwt_secret
+EMAIL_USER=your_email@example.com
+EMAIL_PASS=your_email_password
+EMAIL_SERVICE=gmail
+```
+
+For the frontend, create a `.env` file if needed:
+
+```env
+VITE_BACKEND_URL=http://localhost:5001/
+```
+
+If no MongoDB URL is set, the app automatically uses an in-memory MongoDB database for local development.
+
+### 5. Run the app
+
+Start the backend:
+
+```bash
+cd backend
+npm start
+```
+
+Start the frontend:
+
 ```bash
 cd frontend
-```
-##### 2. Install frontend dependencies:
-```bash
-npm install
-```
----
-
-### 3. Set Up Environment Variables
-Create a .env file in api and add the following environment variables:
-
-####  BACKEND .env file
-```bash
-EMAIL_USER=your_email_address
-EMAIL_PASS=your_email_password
-EMAIL_SERVICE=your_email_service
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-CLOUD_NAME=your_cloud_name
-CLOUD_API_KEY=your_cloud_api_key
-CLOUD_API_SECRET=your_cloud_api_secret
-
-```
-
-#### FRONTEND .env file
-```bash
-VITE_BACKEND_URL=https://your-backend-url.onrender.com
-
-```
----
-
-### 4. Start the Development Server
-Once the dependencies are installed and the .env file is set up, you can start the development server with the following command:
-
-#### Backend
-Start the backend server by navigating to the backend directory and running the following command:
-
-```bash
-
-nodemon index.js
-
-```
-#### Frontend
-Start the frontend server by navigating to the frontend directory and running the following command:
-
-```bash
 npm run dev
 ```
----
 
+Then open the frontend in your browser, usually at:
 
-## 📞 Contact
-Feel free to connect with me through the following platforms:
+```bash
+http://localhost:5173
+```
 
-[![LinkedIn](https://img.shields.io/badge/Karan_Mehta_-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mehtakaran18)
-[![GitHub](https://img.shields.io/badge/Karan_Mehta_-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/KaranMehta1806)
-[![Email](https://img.shields.io/badge/mehtakaran8872@gmail.com-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mehtakaran8872@gmail.com)
+## Default Behavior
 
+- backend tries port 5001 and automatically retries on the next available port if busy
+- frontend expects backend URL through `VITE_BACKEND_URL` or falls back to localhost 5002 by default
+- if no database is configured, demo data is automatically seeded into an in-memory Mongo instance
 
+## Deployment Notes
 
+This project is designed for deployment with:
 
+- frontend on Vercel
+- backend on Render or any Node.js host
+- MongoDB Atlas or any MongoDB hosting provider
 
+## License
 
+This project is licensed under the ISC License.
 
+## Contact
+
+For questions or collaboration, connect via the GitHub repository or project owner.
 
 
