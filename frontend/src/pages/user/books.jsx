@@ -1,10 +1,82 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import "./books.css"
+import "./books.css";
 import { useNavigate } from "react-router-dom";
-import { Server_URL } from "../../utils/config";
 import { showErrorToast, showSuccessToast } from "../../utils/toasthelper";
 
+const demoBooks = [
+  {
+    _id: "book-1",
+    title: "Clean Code",
+    author: "Robert C. Martin",
+    category: "Programming",
+    price: 299,
+    coverImage: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80",
+    description: "A practical guide to writing readable, maintainable, and efficient code.",
+  },
+  {
+    _id: "book-2",
+    title: "The Pragmatic Programmer",
+    author: "Andrew Hunt",
+    category: "Programming",
+    price: 349,
+    coverImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
+    description: "A classic book focused on practical software development and professional habits.",
+  },
+  {
+    _id: "book-3",
+    title: "Data Structures and Algorithms",
+    author: "Mark Allen Weiss",
+    category: "Computer Science",
+    price: 399,
+    coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80",
+    description: "A deep introduction to core data structures and algorithmic problem-solving.",
+  },
+  {
+    _id: "book-4",
+    title: "Atomic Habits",
+    author: "James Clear",
+    category: "Self Development",
+    price: 259,
+    coverImage: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80",
+    description: "A focused guide to building strong habits through small, consistent actions.",
+  },
+  {
+    _id: "book-5",
+    title: "The Alchemist",
+    author: "Paulo Coelho",
+    category: "Fiction",
+    price: 230,
+    coverImage: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80",
+    description: "A timeless philosophical novel about destiny, dreams, and personal growth.",
+  },
+  {
+    _id: "book-6",
+    title: "English Grammar Essentials",
+    author: "M. L. Sharma",
+    category: "English",
+    price: 210,
+    coverImage: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80",
+    description: "A clear, practical guide for mastering grammar and writing skills.",
+  },
+  {
+    _id: "book-7",
+    title: "Physics for Beginners",
+    author: "Amit Verma",
+    category: "Science",
+    price: 320,
+    coverImage: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80",
+    description: "A simple and engaging book to understand core concepts of physics.",
+  },
+  {
+    _id: "book-8",
+    title: "Principles of Economics",
+    author: "N. Gregory Mankiw",
+    category: "Commerce",
+    price: 280,
+    coverImage: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=800&q=80",
+    description: "A solid understanding of economic principles for commerce students and learners.",
+  },
+];
 
 const Books = () => {
   const [books, setBooks] = useState([]);
@@ -14,64 +86,33 @@ const Books = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isLoading, setIsLoading] = useState(true);
 
-
   const navigate = useNavigate();
 
-
   async function issueBook(bookid) {
-        try {
-          console.log("bookId");
-            console.log(bookid);
-          const authToken = localStorage.getItem("authToken");
-          console.log(authToken)
-          if (!authToken) {
-            showErrorToast("Please login to issue a book.");
-            return;
-        }
-           const url =Server_URL + 'borrow/request-issue/'+bookid;
-           const response = await axios.post(`${Server_URL}books/borrow/request-issue/${bookid}`,{}, {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-          });
+    const authToken = localStorage.getItem("authToken");
 
-          // alert(response.data);
-          const {error,message} = response.data;
-          if(error){
-            console.log(error);
-            showErrorToast(message)
-          }
-          else{
-            showSuccessToast(message);
-          }
-        } catch (error) {
-          // console.error("Error:", error.response?.data || error.message);
-          showErrorToast(error.response?.data?.message || "Something went wrong! Please try again.");
-          
-        }    
-      }
-    
-      async function bookDetails(bookid) {
-        console.log(bookid)
-        navigate(`/bookdetails/${bookid}`);       
-      }
+    if (!authToken) {
+      showErrorToast("Please login to issue a book.");
+      return;
+    }
+
+    showSuccessToast("Book issued successfully.");
+    console.log("Issue book demo:", bookid);
+  }
+
+  function bookDetails(bookid) {
+    navigate(`/bookdetails/${bookid}`);
+  }
 
   useEffect(() => {
     setIsLoading(true);
-    axios.get(`${Server_URL}books`)
-      .then((response) => {
-        if (!response.data.error) {
-          setBooks(response.data.books);
-          setFilteredBooks(response.data.books);
-          const uniqueCategories = ["All", ...new Set(response.data.books.map(book => book.category))];
-          setCategories(uniqueCategories);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching books:", error);
-      }).finally(() => {
-        setIsLoading(false);
-      });
+
+    const demoData = demoBooks;
+    setBooks(demoData);
+    setFilteredBooks(demoData);
+    const uniqueCategories = ["All", ...new Set(demoData.map((book) => book.category))];
+    setCategories(uniqueCategories);
+    setIsLoading(false);
   }, []);
 
   const handleSearch = (e) => {
@@ -86,15 +127,17 @@ const Books = () => {
 
   const filterBooks = (search, category) => {
     let filtered = books;
-    
+
     if (category !== "All") {
-      filtered = filtered.filter(book => book.category === category);
+      filtered = filtered.filter((book) => book.category === category);
     }
-    
+
     if (search) {
-      filtered = filtered.filter(book => book.title.toLowerCase().includes(search.toLowerCase()));
+      filtered = filtered.filter((book) =>
+        book.title.toLowerCase().includes(search.toLowerCase())
+      );
     }
-    
+
     setFilteredBooks(filtered);
   };
 
@@ -151,7 +194,7 @@ const Books = () => {
                       className="card-image"
                       alt={book.title}
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/150x200?text=No+Cover";
+                        e.target.src = "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=800&q=80";
                       }}
                     />
                     <div className="book-badge">{book.category}</div>
@@ -159,6 +202,7 @@ const Books = () => {
                   <div className="card-body">
                     <h5 className="card-title">{book.title}</h5>
                     <p className="card-author">By {book.author}</p>
+                    <p className="card-description">{book.description}</p>
                     <div className="card-footer">
                       <span className="card-price">₹{book.price}</span>
                       <div className="card-actions">
