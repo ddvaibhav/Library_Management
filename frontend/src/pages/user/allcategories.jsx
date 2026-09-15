@@ -1,133 +1,97 @@
 import React, { useState, useEffect } from "react";
-import { Server_URL } from "../../utils/config";
-import axios from "axios";
 import "./allcategories.css";
 import { Link } from "react-router-dom";
 import Loader from "../../components/Preloader";
-import { showErrorToast, showSuccessToast } from "../../utils/toasthelper";
+
+// Static category catalog used for the demo deployment so the page works
+// even when the backend/database is unavailable or not connected.
+const categoryData = [
+  { category: "Programming", count: 6, image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80" },
+  { category: "Computer Science", count: 5, image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" },
+  { category: "Science", count: 4, image: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80" },
+  { category: "Commerce", count: 3, image: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=800&q=80" },
+  { category: "English", count: 3, image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80" },
+  { category: "Fiction", count: 2, image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80" },
+  { category: "Self Development", count: 2, image: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80" },
+  { category: "Mathematics", count: 4, image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80" },
+  { category: "History", count: 2, image: "https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=800&q=80" },
+  { category: "Economics", count: 3, image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" },
+  { category: "Management", count: 2, image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" },
+  { category: "Research", count: 2, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80" },
+];
 
 export default function ViewAllCategories() {
-  const [books, setBooks] = useState([]);
-  const [filterBooks, setFilteredBooks] = useState([]);
+  // Keeping the category list local prevents empty or broken UI states during
+  // mock/demo mode and keeps the design responsive without API calls.
+  const [books, setBooks] = useState(categoryData);
+  const [filterBooks, setFilteredBooks] = useState(categoryData);
   const [activeCategory, setActiveCategory] = useState("All");
-  const [categoryCounts, setCategoryCounts] = useState({});
-  const [loading, setLoading] = useState(true);
-
-  const fetchCategories = async () => {
-    try {
-      const url = Server_URL + "books";
-      const response = await axios.get(url);
-      const { error, message, books } = response.data;
-
-      if (error) {
-        showErrorToast(message);
-      } else {
-        setBooks(books);
-        setFilteredBooks(books);
-
-        const categoryCountMap = {};
-        books.forEach((book) => {
-          const cat = book.category;
-          categoryCountMap[cat] = (categoryCountMap[cat] || 0) + 1;
-        });
-
-        setCategoryCounts(categoryCountMap);
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      showErrorToast("Failed to load categories.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [loading, setLoading] = useState(false);
 
   const handleCategoryClick = (selectedCategory) => {
     setActiveCategory(selectedCategory);
     if (selectedCategory === "All") {
       setFilteredBooks(books);
     } else {
-      const filtered = books.filter(
-        (book) => book.category === selectedCategory
-      );
+      const filtered = books.filter((book) => book.category === selectedCategory);
       setFilteredBooks(filtered);
     }
   };
 
   useEffect(() => {
-    fetchCategories();
+    setLoading(false);
   }, []);
 
   return (
     <div className="all-categories-container">
       <div className="all-categories-row">
-        {/* Sidebar */}
         <nav className="all-categories-sidebar">
           <h5 className="all-categories-sidebar-title">Categories</h5>
           <ul className="all-categories-nav">
             <li
-              className={`all-categories-nav-item ${
-                activeCategory === "All" ? "active" : ""
-              }`}
+              className={`all-categories-nav-item ${activeCategory === "All" ? "active" : ""}`}
               onClick={() => handleCategoryClick("All")}
             >
               All
             </li>
-            {[...new Set(books.map((book) => book.category))].map(
-              (category, index) => (
-                <li
-                  key={index}
-                  className={`all-categories-nav-item ${
-                    activeCategory === category ? "active" : ""
-                  }`}
-                  onClick={() => handleCategoryClick(category)}
-                >
-                  {category}
-                </li>
-              )
-            )}
+            {books.map((book, index) => (
+              <li
+                key={index}
+                className={`all-categories-nav-item ${activeCategory === book.category ? "active" : ""}`}
+                onClick={() => handleCategoryClick(book.category)}
+              >
+                {book.category}
+              </li>
+            ))}
           </ul>
         </nav>
 
-        {/* Main Content */}
         <main className="all-categories-main">
           <h2 className="all-categories-main-title">Explore All Categories</h2>
           {loading ? (
             <Loader />
           ) : filterBooks.length > 0 ? (
             <div className="all-categories-grid">
-              {[...new Set(filterBooks.map((book) => book.category))].map(
-                (category, index) => (
-                  <div key={index} className="all-categories-card-wrapper">
-                    <div className="all-categories-card shadow-sm">
-                      <img
-                        src={
-                          filterBooks.find(
-                            (b) => b.category === category
-                          )?.coverImage
-                        }
-                        className="all-categories-card-img"
-                        alt={category}
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src =
-                            "https://via.placeholder.com/300x400?text=No+Image";
-                        }}
-                      />
-                      <div className="all-categories-card-body">
-                        <h5 className="all-categories-card-title">
-                          {category}
-                        </h5>
-                        <p className="text-muted">
-                          Books: {categoryCounts[category] || 0}
-                        </p>
-                        <Link to="/books" className="all-categories-btn">
-                          Explore
-                        </Link>
-                      </div>
+              {filterBooks.map((categoryItem, index) => (
+                <div key={index} className="all-categories-card-wrapper">
+                  <div className="all-categories-card shadow-sm">
+                    <img
+                      src={categoryItem.image}
+                      className="all-categories-card-img"
+                      alt={categoryItem.category}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=800&q=80";
+                      }}
+                    />
+                    <div className="all-categories-card-body">
+                      <h5 className="all-categories-card-title">{categoryItem.category}</h5>
+                      <p className="text-muted">Books: {categoryItem.count}</p>
+                      <Link to="/books" className="all-categories-btn">Explore</Link>
                     </div>
                   </div>
-                )
-              )}
+                </div>
+              ))}
             </div>
           ) : (
             <div className="all-categories-empty">
