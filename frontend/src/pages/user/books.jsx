@@ -3,6 +3,8 @@ import "./books.css";
 import { useNavigate } from "react-router-dom";
 import { showErrorToast, showSuccessToast } from "../../utils/toasthelper";
 
+// Demo book catalog used to keep the library browsing section full and consistent
+// even when the backend is not connected or no database data is available.
 const demoBooks = [
   {
     _id: "book-1",
@@ -76,6 +78,60 @@ const demoBooks = [
     coverImage: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=800&q=80",
     description: "A solid understanding of economic principles for commerce students and learners.",
   },
+  {
+    _id: "book-9",
+    title: "Business Law Essentials",
+    author: "S. R. Singh",
+    category: "Law",
+    price: 260,
+    coverImage: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
+    description: "A practical overview of legal principles and corporate governance basics.",
+  },
+  {
+    _id: "book-10",
+    title: "Psychology and Behavior",
+    author: "Daniel Goleman",
+    category: "Psychology",
+    price: 310,
+    coverImage: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
+    description: "An approachable study of human behavior, mindset, and emotional intelligence.",
+  },
+  {
+    _id: "book-11",
+    title: "World History Timeline",
+    author: "R. K. Sharma",
+    category: "History",
+    price: 295,
+    coverImage: "https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=800&q=80",
+    description: "A chronological look at major events and societies across world history.",
+  },
+  {
+    _id: "book-12",
+    title: "Political Science Basics",
+    author: "A. K. Mehta",
+    category: "Political Science",
+    price: 270,
+    coverImage: "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=800&q=80",
+    description: "A concise guide to democratic systems, institutions, and public policy.",
+  },
+  {
+    _id: "book-13",
+    title: "Environmental Studies",
+    author: "L. N. Gupta",
+    category: "Environmental Science",
+    price: 290,
+    coverImage: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=800&q=80",
+    description: "Covers ecology, sustainability, and key environmental challenges.",
+  },
+  {
+    _id: "book-14",
+    title: "Journalism Fundamentals",
+    author: "Meera Joshi",
+    category: "Journalism",
+    price: 240,
+    coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80",
+    description: "Introduces storytelling, reporting, and media ethics for aspiring journalists.",
+  },
 ];
 
 const Books = () => {
@@ -107,6 +163,8 @@ const Books = () => {
   useEffect(() => {
     setIsLoading(true);
 
+    // Populate the list from the static demo catalog so the browsing page stays
+    // usable in local or live demos without depending on a backend database.
     const demoData = demoBooks;
     setBooks(demoData);
     setFilteredBooks(demoData);

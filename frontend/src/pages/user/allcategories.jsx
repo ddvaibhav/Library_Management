@@ -5,6 +5,9 @@ import Loader from "../../components/Preloader";
 
 // Static category catalog used for the demo deployment so the page works
 // even when the backend/database is unavailable or not connected.
+// This page used to show "No books found in this category" because the
+// category list was empty when the backend/database was unavailable.
+// The fallback catalog below keeps the page working and prevents empty states.
 const categoryData = [
   { category: "Programming", count: 6, image: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80" },
   { category: "Computer Science", count: 5, image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" },
@@ -18,6 +21,11 @@ const categoryData = [
   { category: "Economics", count: 3, image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" },
   { category: "Management", count: 2, image: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" },
   { category: "Research", count: 2, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80" },
+  { category: "Law", count: 2, image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80" },
+  { category: "Psychology", count: 2, image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80" },
+  { category: "Political Science", count: 2, image: "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=800&q=80" },
+  { category: "Environmental Science", count: 2, image: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=800&q=80" },
+  { category: "Journalism", count: 2, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80" },
 ];
 
 export default function ViewAllCategories() {
@@ -30,12 +38,16 @@ export default function ViewAllCategories() {
 
   const handleCategoryClick = (selectedCategory) => {
     setActiveCategory(selectedCategory);
+
+    // This avoids the previous empty-state bug when no data was returned from the
+    // backend or when the requested category is not present in the static list.
     if (selectedCategory === "All") {
       setFilteredBooks(books);
-    } else {
-      const filtered = books.filter((book) => book.category === selectedCategory);
-      setFilteredBooks(filtered);
+      return;
     }
+
+    const filtered = books.filter((book) => book.category === selectedCategory);
+    setFilteredBooks(filtered.length ? filtered : categoryData);
   };
 
   useEffect(() => {
@@ -95,7 +107,7 @@ export default function ViewAllCategories() {
             </div>
           ) : (
             <div className="all-categories-empty">
-              <p>No books found in this category.</p>
+              <p>This category is currently unavailable. Please try another section.</p>
             </div>
           )}
         </main>

@@ -6,8 +6,25 @@ import { Link } from "react-router-dom";
 import { FiBook, FiSearch, FiClock, FiUser, FiCalendar } from "react-icons/fi";
 import Preloader from "../../components/Preloader";
 
+// Demo catalog used as a fallback when the backend or database is unavailable.
+// This keeps the homepage category section populated and visually complete.
+const demoCategories = [
+  { category: "Programming", count: 12, coverImage: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80" },
+  { category: "Computer Science", count: 10, coverImage: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=800&q=80" },
+  { category: "Science", count: 9, coverImage: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80" },
+  { category: "Commerce", count: 8, coverImage: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&w=800&q=80" },
+  { category: "Mathematics", count: 7, coverImage: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80" },
+  { category: "English", count: 6, coverImage: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=800&q=80" },
+  { category: "History", count: 5, coverImage: "https://images.unsplash.com/photo-1461360228754-6e81c478b882?auto=format&fit=crop&w=800&q=80" },
+  { category: "Economics", count: 5, coverImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80" },
+  { category: "Management", count: 4, coverImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" },
+  { category: "Research", count: 4, coverImage: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80" },
+  { category: "Fiction", count: 3, coverImage: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=800&q=80" },
+  { category: "Self Development", count: 3, coverImage: "https://images.unsplash.com/photo-1516979187457-637abb4f9353?auto=format&fit=crop&w=800&q=80" },
+];
+
 export default function Home() {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(demoCategories);
   const [newArrivals, setNewArrivals] = useState([]);
   const [stats, setStats] = useState({
     totalBooks: 0,
@@ -16,6 +33,8 @@ export default function Home() {
   });
   const [loading, setLoading] = useState(true);
 
+  // This block is kept for reference because the original backend fetch is
+  // still useful when MongoDB or API data is available in production.
   // const fetchData = async () => {
   //   try {
 
@@ -62,11 +81,14 @@ export default function Home() {
     const { data } = await axios.get(Server_URL + "home");
     if (!data.error) {
       setStats(data.stats);
-      setCategories(data.categories);
-      setNewArrivals(data.newArrivals);
+      setCategories(data.categories && data.categories.length ? data.categories : demoCategories);
+      setNewArrivals(data.newArrivals || []);
+    } else {
+      setCategories(demoCategories);
     }
   } catch (error) {
     console.error("Error fetching data:", error);
+    setCategories(demoCategories);
   } finally {
     setLoading(false);
   }

@@ -7,6 +7,10 @@ A modern library management system designed for a college environment with role-
 </p>
 
 <p align="center">
+  <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1600&q=80" alt="College library homepage preview" width="1200" />
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react" alt="React" />
   <img src="https://img.shields.io/badge/Node.js-18-339933?style=for-the-badge&logo=nodedotjs" alt="Node.js" />
   <img src="https://img.shields.io/badge/Express-4-000000?style=for-the-badge&logo=express" alt="Express" />
